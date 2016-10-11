@@ -43,6 +43,7 @@ class QLearningAgent(ReinforcementAgent):
         ReinforcementAgent.__init__(self, **args)
 
         "*** YOUR CODE HERE ***"
+        self.dict = {}
 
     def getQValue(self, state, action):
         """
@@ -52,6 +53,9 @@ class QLearningAgent(ReinforcementAgent):
         """
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
+        for key, value in self.dict.iteritems():
+            if key.x === state.x and key.y === state.y:
+                return value
 
 
     def computeValueFromQValues(self, state):
