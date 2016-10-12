@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -44,6 +44,7 @@ class QLearningAgent(ReinforcementAgent):
 
         "*** YOUR CODE HERE ***"
         self.dict = {}
+        self.ql = util.Counter()
 
     def getQValue(self, state, action):
         """
@@ -52,10 +53,11 @@ class QLearningAgent(ReinforcementAgent):
           or the Q node value otherwise
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
-        for key, value in self.dict.iteritems():
-            if key.x === state.x and key.y === state.y:
-                return value
+        #util.raiseNotDefined()
+        return self.ql[(state,action)]
+        #for key, value in self.dict.iteritems():
+        #    if key.x == state.x and key.y == state.y:
+        #        return value
 
 
     def computeValueFromQValues(self, state):
@@ -66,7 +68,13 @@ class QLearningAgent(ReinforcementAgent):
           terminal state, you should return a value of 0.0.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        actions = self.getLegalActions(state)
+        #no leagal actions
+        if len(actions) == 0:
+            return 0.0
+        #argMax(Q(s,a))
+        return max([self.getQValue(state,action) for action in actions])
+        #util.raiseNotDefined()
 
     def computeActionFromQValues(self, state):
         """
@@ -75,7 +83,18 @@ class QLearningAgent(ReinforcementAgent):
           you should return None.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        l = util.Counter()
+        actions = self.getLegalActions(state)
+        # no leagal actions
+        if len(actions) == 0:
+            return None
+        else:
+            for action in actions:
+                l[(state,action)] = self.getQValue(state,action)
+            if len(l) == 1:
+                return (list(l.keys()))[0][1]
+            return l.argMax()[1]
+        #util.raiseNotDefined()
 
     def getAction(self, state):
         """
@@ -90,9 +109,18 @@ class QLearningAgent(ReinforcementAgent):
         """
         # Pick Action
         legalActions = self.getLegalActions(state)
-        action = None
+        #action = None
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        if (len(legalActions == 0)):
+            return None
+        elif (len(legalActions) == 1):
+            return legalActions[0]
+        else:
+            if util.flipCoin(self.epsilon):
+                return random.choice(legalActions)
+            else:
+                return self.getPolicy(state)
+        #util.raiseNotDefined()
 
         return action
 
@@ -106,7 +134,24 @@ class QLearningAgent(ReinforcementAgent):
           it will be called on your behalf
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        ll =[]
+        actions = self.getLegalActions(nextState)
+        if (len(actions) == 0):
+            self.ql[(state,action)] = ((1-self.alpha)*self.ql[(state,action)]) + self.alpha*(reward)
+
+        for a in self.getLegalActions(nextState):
+            ll.append(self.ql[(nextState,a)])
+	    #print ('s',len(ll))
+        s = set(ll)
+        if len(s) == 1:
+            b = ll[0]
+            self.ql[(state,action)] = ((1-self.alpha)*self.ql[(state,action)]) + self.alpha*(self.discount*b+reward)
+        elif not(len(s) == 0):
+            b = max(ll)
+            self.ql[(state,action)] = ((1-self.alpha)*self.ql[(state,action)]) + self.alpha*(self.discount*b +reward)
+        while len(ll) > 0 : ll.pop()
+
+        #util.raiseNotDefined()
 
     def getPolicy(self, state):
         return self.computeActionFromQValues(state)
