@@ -54,7 +54,7 @@ class QLearningAgent(ReinforcementAgent):
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
         for key, value in self.dict.iteritems():
-            if key.x === state.x and key.y === state.y:
+            if key.x == state.x and key.y == state.y:
                 return value
 
 
@@ -68,6 +68,7 @@ class QLearningAgent(ReinforcementAgent):
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
 
+    "I have to do this"
     def computeActionFromQValues(self, state):
         """
           Compute the best action to take in a state.  Note that if there
@@ -77,6 +78,8 @@ class QLearningAgent(ReinforcementAgent):
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
 
+
+    "TODO"
     def getAction(self, state):
         """
           Compute the action to take in the current state.  With
@@ -93,6 +96,7 @@ class QLearningAgent(ReinforcementAgent):
         action = None
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
+        print legalActions
 
         return action
 
