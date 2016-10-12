@@ -111,7 +111,7 @@ class QLearningAgent(ReinforcementAgent):
         legalActions = self.getLegalActions(state)
         #action = None
         "*** YOUR CODE HERE ***"
-        if (len(legalActions == 0)):
+        if (len(legalActions) == 0):
             return None
         elif (len(legalActions) == 1):
             return legalActions[0]
@@ -214,14 +214,15 @@ class ApproximateQAgent(PacmanQAgent):
           where * is the dotProduct operator
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.ql[(state,action)]
+        #util.raiseNotDefined()
 
     def update(self, state, action, nextState, reward):
         """
            Should update your weights based on transition
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        #util.raiseNotDefined()
 
     def final(self, state):
         "Called at the end of each game."
